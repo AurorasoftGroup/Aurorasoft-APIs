@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auroracolor Showcase</title>
+  <script src="/library/fontloader/api.min.js"></script>
+</head>
+<style>
+    body {
+        font-family: 'Eurosquare', sans-serif;
+        text-align: center;
+        background-color: #ecf0f1;
+    }
+
+    h1 {
+        font-family: 'Auroracolor';
+        margin-bottom: 20px;
+    }
+
+    .box {
+        width: 200px;
+        height: 100px;
+        margin: 10px auto;
+        line-height: 100px;
+        font-size: 18px;
+        color: white;
+        background-color: var(--background-color, #7f8c8d); /* Default color */
+        border-radius: 8px;
+    }
+
+</style>
+<body>
+  <h1>Auroracolour Library Showcase</h1>
+  <button id="load-colors">Load Colors</button>
+  <div class="box" id="box1">Midnight</div>
+  <div class="box" id="box2">Greek Red</div>
+  <div class="box" id="box3">Yellow 435</div>
+
+  <script src="api.js"></script>
+  <script>
+    document.getElementById('load-colors').addEventListener('click', () => {
+      Auroracolour.loadColors('red', 'black', 'yellow');
+
+      const box1 = document.getElementById('box1');
+      const box2 = document.getElementById('box2');
+      const box3 = document.getElementById('box3');
+
+      Auroracolour.applyColorToElement(box1, 'background-color', 'red');
+      Auroracolour.applyColorToElement(box2, 'background-color', 'black');
+      Auroracolour.applyColorToElement(box3, 'background-color', 'yellow');
+    });
+  </script>
+</body>
+</html>
