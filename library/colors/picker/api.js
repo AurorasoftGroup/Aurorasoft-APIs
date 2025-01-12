@@ -66,24 +66,8 @@ class ColorPicker {
 
     drawColorSpectrum() {
         const ctx = this.context;
-
-        // Step 1: Draw horizontal gradient (pure colors in the center)
-        const horizontalGradient = ctx.createLinearGradient(0, 0, this.canvas.width, 0);
-        horizontalGradient.addColorStop(0, "white");
-        horizontalGradient.addColorStop(0.5, "transparent");
-        horizontalGradient.addColorStop(1, "white");
-        ctx.fillStyle = horizontalGradient;
-        ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Step 2: Draw vertical gradient (black at the bottom, white at the top)
-        const verticalGradient = ctx.createLinearGradient(0, 0, 0, this.canvas.height);
-        verticalGradient.addColorStop(0, "rgba(255, 255, 255, 1)");
-        verticalGradient.addColorStop(0.5, "transparent");
-        verticalGradient.addColorStop(1, "rgba(0, 0, 0, 1)");
-        ctx.fillStyle = verticalGradient;
-        ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Step 3: Overlay pure color spectrum in the center
+    
+        // Step 1: Draw horizontal gradient for pure colors
         const colorGradient = ctx.createLinearGradient(0, 0, this.canvas.width, 0);
         colorGradient.addColorStop(0, "red");
         colorGradient.addColorStop(0.17, "orange");
@@ -92,13 +76,26 @@ class ColorPicker {
         colorGradient.addColorStop(0.67, "blue");
         colorGradient.addColorStop(0.84, "indigo");
         colorGradient.addColorStop(1, "violet");
-        ctx.globalCompositeOperation = "multiply"; // Blend the colors with gradients
+    
         ctx.fillStyle = colorGradient;
         ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-
-        // Reset blend mode
-        ctx.globalCompositeOperation = "source-over";
-    }
+    
+        // Step 2: Draw vertical gradient for white (top half)
+        const whiteGradient = ctx.createLinearGradient(0, 0, 0, this.canvas.height / 2);
+        whiteGradient.addColorStop(0, "rgba(255, 255, 255, 1)");
+        whiteGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+    
+        ctx.fillStyle = whiteGradient;
+        ctx.fillRect(0, 0, this.canvas.width, this.canvas.height / 2);
+    
+        // Step 3: Draw vertical gradient for black (bottom half)
+        const blackGradient = ctx.createLinearGradient(0, this.canvas.height / 2, 0, this.canvas.height);
+        blackGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
+        blackGradient.addColorStop(1, "rgba(0, 0, 0, 1)");
+    
+        ctx.fillStyle = blackGradient;
+        ctx.fillRect(0, this.canvas.height / 2, this.canvas.width, this.canvas.height / 2);
+    }    
 
     addEventListeners() {
         this.canvas.addEventListener("click", (e) => this.pickColor(e));
