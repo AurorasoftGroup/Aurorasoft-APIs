@@ -17,7 +17,7 @@ class ColorPicker {
 
     createColorPickerUI() {
         // Style container
-        this.container.style.fontFamily = "'Arial', sans-serif";
+        this.container.style.fontFamily = "'eurosquare', sans-serif";
         this.container.style.width = `${this.options.width}px`;  // Ensure container width matches the color spectrum
         this.container.style.padding = "10px";
         this.container.style.border = "1px solid #ddd";
