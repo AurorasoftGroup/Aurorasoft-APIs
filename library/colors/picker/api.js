@@ -63,7 +63,7 @@ class ColorPicker {
     
         this.context = this.canvas.getContext("2d");
         this.drawColorSpectrum();
-    }    
+    }        
 
     drawColorSpectrum() {
         const ctx = this.context;
