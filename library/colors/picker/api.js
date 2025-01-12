@@ -21,9 +21,10 @@ class ColorPicker {
         this.canvas.width = this.options.width;
         this.canvas.height = this.options.height;
         this.canvas.style.border = "1px solid #ccc";
-        
+        this.canvas.style.cursor = "crosshair"; // Set cursor to crosshair
+    
         this.container.appendChild(this.canvas);
-
+    
         // Create preview box to show selected color
         this.previewBox = document.createElement("div");
         this.previewBox.style.width = "50px";
@@ -31,38 +32,38 @@ class ColorPicker {
         this.previewBox.style.marginTop = "10px";
         this.previewBox.style.border = "1px solid #000";
         this.previewBox.style.backgroundColor = this.color;
-
+    
         this.container.appendChild(this.previewBox);
-
+    
         // Create input to show selected color
         this.colorInput = document.createElement("input");
         this.colorInput.type = "text";
         this.colorInput.value = this.color;
         this.colorInput.style.marginTop = "10px";
-
+    
         this.container.appendChild(this.colorInput);
-
+    
         // Create additional info display (HEX, CMYK, HSL)
         this.infoBox = document.createElement("div");
         this.infoBox.style.marginTop = "10px";
-
+    
         this.hexDisplay = document.createElement("p");
         this.hexDisplay.textContent = `HEX: ${this.color}`;
         this.infoBox.appendChild(this.hexDisplay);
-
+    
         this.cmykDisplay = document.createElement("p");
         this.cmykDisplay.textContent = `CMYK: -`;
         this.infoBox.appendChild(this.cmykDisplay);
-
+    
         this.hslDisplay = document.createElement("p");
         this.hslDisplay.textContent = `HSL: -`;
         this.infoBox.appendChild(this.hslDisplay);
-
+    
         this.container.appendChild(this.infoBox);
-
+    
         this.context = this.canvas.getContext("2d");
         this.drawColorSpectrum();
-    }
+    }    
 
     drawColorSpectrum() {
         const ctx = this.context;
