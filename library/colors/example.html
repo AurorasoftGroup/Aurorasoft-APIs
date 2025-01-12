@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Auroracolor Showcase</title>
-  <script src="/library/fontloader/api.min.js"></script>
+  <script src="https://aurorasoftapis.pages.dev/library/fontloader/api.min.js"></script>
 </head>
 <style>
     body {
@@ -20,6 +20,7 @@
     }
 
     .box {
+        text-shadow: #000000 1px 0 10px;
         width: 200px;
         height: 100px;
         margin: 10px auto;
@@ -32,25 +33,46 @@
 
 </style>
 <body>
-  <h1>Auroracolour Library Showcase</h1>
-  <button id="load-colors">Load Colors</button>
-  <div class="box" id="box1">Midnight</div>
-  <div class="box" id="box2">Greek Red</div>
-  <div class="box" id="box3">Yellow 435</div>
+    <h1>Auroracolor Library Showcase</h1>
+    <button id="load-colors">Load Colors</button>
+    <div class="box" id="box1">Red</div>
+    <div class="box" id="box2">Orange</div>
+    <div class="box" id="box3">Yellow</div>
+    <div class="box" id="box4">Green</div>
+    <div class="box" id="box5">Blue</div>
+    <div class="box" id="box6">Purple</div>
+    <div class="box" id="box7">Black</div>
+    <div class="box" id="box8">White</div>
+    <div class="box" id="box9">Light Gray</div>
+    <div class="box" id="box10">Dark Gray</div>
 
-  <script src="api.js"></script>
-  <script>
+    <script src="api.js"></script>
+    <script>
     document.getElementById('load-colors').addEventListener('click', () => {
-      Auroracolour.loadColors('red', 'black', 'yellow');
+        auroracolor.loadColors('red', 'orange', 'yellow', 'green', 'blue', 'purple', 'black', 'white', 'light-gray', 'dark-gray');
 
-      const box1 = document.getElementById('box1');
-      const box2 = document.getElementById('box2');
-      const box3 = document.getElementById('box3');
+        const box1 = document.getElementById('box1');
+        const box2 = document.getElementById('box2');
+        const box3 = document.getElementById('box3');
+        const box4 = document.getElementById('box4');
+        const box5 = document.getElementById('box5');
+        const box6 = document.getElementById('box6');
+        const box7 = document.getElementById('box7');
+        const box8 = document.getElementById('box8');
+        const box9 = document.getElementById('box9');
+        const box10 = document.getElementById('box10');
 
-      Auroracolour.applyColorToElement(box1, 'background-color', 'red');
-      Auroracolour.applyColorToElement(box2, 'background-color', 'black');
-      Auroracolour.applyColorToElement(box3, 'background-color', 'yellow');
+        auroracolor.applyColorToElement(box1, 'background-color', 'red');
+        auroracolor.applyColorToElement(box2, 'background-color', 'orange');
+        auroracolor.applyColorToElement(box3, 'background-color', 'yellow');
+        auroracolor.applyColorToElement(box4, 'background-color', 'green');
+        auroracolor.applyColorToElement(box5, 'background-color', 'blue');
+        auroracolor.applyColorToElement(box6, 'background-color', 'puple');
+        auroracolor.applyColorToElement(box7, 'background-color', 'black');
+        auroracolor.applyColorToElement(box8, 'background-color', 'white');
+        auroracolor.applyColorToElement(box9, 'background-color', 'light-gray');
+        auroracolor.applyColorToElement(box10, 'background-color', 'dark-gray');
     });
-  </script>
+    </script>
 </body>
 </html>

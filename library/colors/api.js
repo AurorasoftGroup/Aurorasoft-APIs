@@ -9,7 +9,7 @@ const auroracolor = (function () {
         black: "#202122",
         white: "#ffffff",
         "light-gray": "#c8ccd1",
-        "dark-gray": "a2a9b1",
+        "dark-gray": "#a2a9b1",
     };
   
     let loadedColors = {};
