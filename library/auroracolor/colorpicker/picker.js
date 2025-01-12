@@ -86,7 +86,7 @@ class ColorPicker {
         input.style.outline = "none";
         input.style.backgroundColor = "#fff";
         input.style.transition = "border-color 0.3s";
-        input.style.fontFamily = "'Arial', sans-serif";
+        input.style.fontFamily = "'eurosquare', sans-serif";
 
         input.addEventListener("focus", () => {
             input.style.borderColor = "#007BFF";
