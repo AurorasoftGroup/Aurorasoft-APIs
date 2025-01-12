@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Picker Example</title>
+    <style>
+        #color-picker-container {
+            margin: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            width: fit-content;
+        }
+    </style>
+</head>
+<body>
+
+<div id="color-picker-container"></div>
+<p id="selected-color">Selected Color: None</p>
+
+<script type="module">
+    import ColorPicker from './api.min.js';
+
+    // Initialize the ColorPicker
+    const colorPicker = new ColorPicker('#color-picker-container', {
+        width: 300,
+        height: 300,
+        defaultColor: '#ff0000'
+    });
+
+    // Listen for color changes
+    document.querySelector('#color-picker-container').addEventListener('colorChange', (event) => {
+        document.getElementById('selected-color').textContent = `Selected Color: ${event.detail}`;
+    });
+</script>
+
+</body>
+</html>
