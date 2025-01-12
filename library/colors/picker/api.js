@@ -18,7 +18,7 @@ class ColorPicker {
     createColorPickerUI() {
         // Style container
         this.container.style.fontFamily = "'Arial', sans-serif";
-        this.container.style.width = `${this.options.width + 20}px`;
+        this.container.style.width = `${this.options.width}px`;  // Ensure container width matches the color spectrum
         this.container.style.padding = "10px";
         this.container.style.border = "1px solid #ddd";
         this.container.style.borderRadius = "8px";
@@ -32,12 +32,13 @@ class ColorPicker {
         this.canvas.style.border = "1px solid #ccc";
         this.canvas.style.cursor = "crosshair";
         this.canvas.style.borderRadius = "4px";
+        this.canvas.style.width = "100%";  // Make canvas width consistent with container width
 
         this.container.appendChild(this.canvas);
 
         // Create preview box
         this.previewBox = document.createElement("div");
-        this.previewBox.style.width = "100%";
+        this.previewBox.style.width = "100%";  // Match the width of the container
         this.previewBox.style.height = "50px";
         this.previewBox.style.marginTop = "10px";
         this.previewBox.style.border = "1px solid #000";
@@ -76,7 +77,7 @@ class ColorPicker {
         input.type = "text";
         input.placeholder = placeholder;
         input.value = value;
-        input.style.width = "100%";
+        input.style.width = "100%";  // Ensure input width matches container
         input.style.padding = "10px";
         input.style.border = "1px solid #ddd";
         input.style.borderRadius = "4px";
