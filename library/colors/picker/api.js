@@ -22,9 +22,9 @@ class ColorPicker {
         this.canvas.height = this.options.height;
         this.canvas.style.border = "1px solid #ccc";
         this.canvas.style.cursor = "crosshair"; // Set cursor to crosshair
-    
+
         this.container.appendChild(this.canvas);
-    
+
         // Create preview box to show selected color
         this.previewBox = document.createElement("div");
         this.previewBox.style.width = "50px";
@@ -32,42 +32,41 @@ class ColorPicker {
         this.previewBox.style.marginTop = "10px";
         this.previewBox.style.border = "1px solid #000";
         this.previewBox.style.backgroundColor = this.color;
-    
+
         this.container.appendChild(this.previewBox);
-    
-        // Create input to show selected color
-        this.colorInput = document.createElement("input");
-        this.colorInput.type = "text";
-        this.colorInput.value = this.color;
-        this.colorInput.style.marginTop = "10px";
-    
-        this.container.appendChild(this.colorInput);
-    
-        // Create additional info display (HEX, CMYK, HSL)
-        this.infoBox = document.createElement("div");
-        this.infoBox.style.marginTop = "10px";
-    
-        this.hexDisplay = document.createElement("p");
-        this.hexDisplay.textContent = `HEX: ${this.color}`;
-        this.infoBox.appendChild(this.hexDisplay);
-    
-        this.cmykDisplay = document.createElement("p");
-        this.cmykDisplay.textContent = `CMYK: -`;
-        this.infoBox.appendChild(this.cmykDisplay);
-    
-        this.hslDisplay = document.createElement("p");
-        this.hslDisplay.textContent = `HSL: -`;
-        this.infoBox.appendChild(this.hslDisplay);
-    
-        this.container.appendChild(this.infoBox);
-    
+
+        // Create input for HEX
+        this.hexInput = document.createElement("input");
+        this.hexInput.type = "text";
+        this.hexInput.value = this.color;
+        this.hexInput.style.marginTop = "10px";
+        this.hexInput.placeholder = "HEX";
+
+        this.container.appendChild(this.hexInput);
+
+        // Create input for RGB
+        this.rgbInput = document.createElement("input");
+        this.rgbInput.type = "text";
+        this.rgbInput.placeholder = "RGB (e.g., 255, 0, 0)";
+        this.rgbInput.style.marginTop = "10px";
+
+        this.container.appendChild(this.rgbInput);
+
+        // Create input for HSL
+        this.hslInput = document.createElement("input");
+        this.hslInput.type = "text";
+        this.hslInput.placeholder = "HSL (e.g., 0, 100%, 50%)";
+        this.hslInput.style.marginTop = "10px";
+
+        this.container.appendChild(this.hslInput);
+
         this.context = this.canvas.getContext("2d");
         this.drawColorSpectrum();
-    }        
+    }
 
     drawColorSpectrum() {
         const ctx = this.context;
-    
+
         // Step 1: Draw horizontal gradient for pure colors
         const colorGradient = ctx.createLinearGradient(0, 0, this.canvas.width, 0);
         colorGradient.addColorStop(0, "red");
@@ -77,30 +76,32 @@ class ColorPicker {
         colorGradient.addColorStop(0.67, "blue");
         colorGradient.addColorStop(0.84, "indigo");
         colorGradient.addColorStop(1, "violet");
-    
+
         ctx.fillStyle = colorGradient;
         ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    
+
         // Step 2: Draw vertical gradient for white (top half)
         const whiteGradient = ctx.createLinearGradient(0, 0, 0, this.canvas.height / 2);
         whiteGradient.addColorStop(0, "rgba(255, 255, 255, 1)");
         whiteGradient.addColorStop(1, "rgba(255, 255, 255, 0)");
-    
+
         ctx.fillStyle = whiteGradient;
         ctx.fillRect(0, 0, this.canvas.width, this.canvas.height / 2);
-    
+
         // Step 3: Draw vertical gradient for black (bottom half)
         const blackGradient = ctx.createLinearGradient(0, this.canvas.height / 2, 0, this.canvas.height);
         blackGradient.addColorStop(0, "rgba(0, 0, 0, 0)");
         blackGradient.addColorStop(1, "rgba(0, 0, 0, 1)");
-    
+
         ctx.fillStyle = blackGradient;
         ctx.fillRect(0, this.canvas.height / 2, this.canvas.width, this.canvas.height / 2);
-    }    
+    }
 
     addEventListeners() {
         this.canvas.addEventListener("click", (e) => this.pickColor(e));
-        this.colorInput.addEventListener("input", (e) => this.updateColor(e));
+        this.hexInput.addEventListener("input", (e) => this.updateFromHex(e));
+        this.rgbInput.addEventListener("input", (e) => this.updateFromRgb(e));
+        this.hslInput.addEventListener("input", (e) => this.updateFromHsl(e));
     }
 
     pickColor(event) {
@@ -115,26 +116,43 @@ class ColorPicker {
         this.container.dispatchEvent(new CustomEvent("colorChange", { detail: this.color }));
     }
 
-    updateColor(event) {
-        this.color = event.target.value;
-        const rgb = this.hexToRgb(this.color);
+    updateFromHex(event) {
+        const hex = event.target.value;
+        const rgb = this.hexToRgb(hex);
         if (rgb) {
             this.updateUI(rgb.r, rgb.g, rgb.b);
-            this.container.dispatchEvent(new CustomEvent("colorChange", { detail: this.color }));
+            this.color = hex;
+        }
+    }
+
+    updateFromRgb(event) {
+        const rgb = event.target.value.match(/\d+/g);
+        if (rgb && rgb.length === 3) {
+            const [r, g, b] = rgb.map(Number);
+            this.color = `rgb(${r}, ${g}, ${b})`;
+            this.updateUI(r, g, b);
+        }
+    }
+
+    updateFromHsl(event) {
+        const hsl = event.target.value.match(/\d+/g);
+        if (hsl && hsl.length === 3) {
+            const [h, s, l] = hsl.map(Number);
+            const { r, g, b } = this.hslToRgb(h, s, l);
+            this.color = `rgb(${r}, ${g}, ${b})`;
+            this.updateUI(r, g, b);
         }
     }
 
     updateUI(r, g, b) {
-        this.colorInput.value = this.color;
-        this.previewBox.style.backgroundColor = this.color;
+        this.previewBox.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 
         const hex = this.rgbToHex(r, g, b);
-        const cmyk = this.rgbToCmyk(r, g, b);
         const hsl = this.rgbToHsl(r, g, b);
 
-        this.hexDisplay.textContent = `HEX: ${hex}`;
-        this.cmykDisplay.textContent = `CMYK: ${cmyk}`;
-        this.hslDisplay.textContent = `HSL: ${hsl}`;
+        this.hexInput.value = hex;
+        this.rgbInput.value = `${r}, ${g}, ${b}`;
+        this.hslInput.value = `${hsl.h}, ${hsl.s}%, ${hsl.l}%`;
     }
 
     rgbToHex(r, g, b) {
@@ -153,21 +171,11 @@ class ColorPicker {
         return null;
     }
 
-    rgbToCmyk(r, g, b) {
-        const c = 1 - (r / 255);
-        const m = 1 - (g / 255);
-        const y = 1 - (b / 255);
-        const k = Math.min(c, m, y);
-        if (k === 1) return `0%, 0%, 0%, 100%`;
-        return `${((c - k) / (1 - k) * 100).toFixed(1)}%, ${(m - k) / (1 - k) * 100}%, ${(y - k) / (1 - k) * 100}%, ${(k * 100).toFixed(1)}%`;
-    }
-
     rgbToHsl(r, g, b) {
         r /= 255;
         g /= 255;
         b /= 255;
-        const max = Math.max(r, g, b);
-        const min = Math.min(r, g, b);
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
         let h, s, l = (max + min) / 2;
 
         if (max === min) {
@@ -182,7 +190,46 @@ class ColorPicker {
             }
             h /= 6;
         }
-        return `${(h * 360).toFixed(1)}°, ${(s * 100).toFixed(1)}%, ${(l * 100).toFixed(1)}%`;
+
+        return {
+            h: Math.round(h * 360),
+            s: Math.round(s * 100),
+            l: Math.round(l * 100)
+        };
+    }
+
+    hslToRgb(h, s, l) {
+        h /= 360;
+        s /= 100;
+        l /= 100;
+
+        let r, g, b;
+
+        if (s === 0) {
+            r = g = b = l; // achromatic
+        } else {
+            const hue2rgb = (p, q, t) => {
+                if (t < 0) t += 1;
+                if (t > 1) t -= 1;
+                if (t < 1 / 6) return p + (q - p) * 6 * t;
+                if (t < 1 / 2) return q;
+                if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                return p;
+            };
+
+            const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+            const p = 2 * l - q;
+
+            r = hue2rgb(p, q, h + 1 / 3);
+            g = hue2rgb(p, q, h);
+            b = hue2rgb(p, q, h - 1 / 3);
+        }
+
+        return {
+            r: Math.round(r * 255),
+            g: Math.round(g * 255),
+            b: Math.round(b * 255)
+        };
     }
 }
 
