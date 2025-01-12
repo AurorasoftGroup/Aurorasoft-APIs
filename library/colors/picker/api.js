@@ -16,52 +16,86 @@ class ColorPicker {
     }
 
     createColorPickerUI() {
+        // Style container
+        this.container.style.fontFamily = "'Arial', sans-serif";
+        this.container.style.width = `${this.options.width + 20}px`;
+        this.container.style.padding = "10px";
+        this.container.style.border = "1px solid #ddd";
+        this.container.style.borderRadius = "8px";
+        this.container.style.boxShadow = "0 2px 8px rgba(0, 0, 0, 0.1)";
+        this.container.style.backgroundColor = "#f9f9f9";
+
         // Create canvas for color spectrum
         this.canvas = document.createElement("canvas");
         this.canvas.width = this.options.width;
         this.canvas.height = this.options.height;
         this.canvas.style.border = "1px solid #ccc";
-        this.canvas.style.cursor = "crosshair"; // Set cursor to crosshair
+        this.canvas.style.cursor = "crosshair";
+        this.canvas.style.borderRadius = "4px";
 
         this.container.appendChild(this.canvas);
 
-        // Create preview box to show selected color
+        // Create preview box
         this.previewBox = document.createElement("div");
-        this.previewBox.style.width = "50px";
+        this.previewBox.style.width = "100%";
         this.previewBox.style.height = "50px";
         this.previewBox.style.marginTop = "10px";
         this.previewBox.style.border = "1px solid #000";
+        this.previewBox.style.borderRadius = "4px";
         this.previewBox.style.backgroundColor = this.color;
 
         this.container.appendChild(this.previewBox);
 
-        // Create input for HEX
-        this.hexInput = document.createElement("input");
-        this.hexInput.type = "text";
-        this.hexInput.value = this.color;
-        this.hexInput.style.marginTop = "10px";
-        this.hexInput.placeholder = "HEX";
+        // Create input fields container
+        this.inputContainer = document.createElement("div");
+        this.inputContainer.style.marginTop = "10px";
+        this.inputContainer.style.display = "flex";
+        this.inputContainer.style.flexDirection = "column";
+        this.inputContainer.style.gap = "10px";
 
-        this.container.appendChild(this.hexInput);
+        // Create input for HEX
+        this.hexInput = this.createStyledInput("HEX", this.color);
+        this.inputContainer.appendChild(this.hexInput);
 
         // Create input for RGB
-        this.rgbInput = document.createElement("input");
-        this.rgbInput.type = "text";
-        this.rgbInput.placeholder = "RGB (e.g., 255, 0, 0)";
-        this.rgbInput.style.marginTop = "10px";
-
-        this.container.appendChild(this.rgbInput);
+        this.rgbInput = this.createStyledInput("RGB (e.g., 255, 0, 0)", "");
+        this.inputContainer.appendChild(this.rgbInput);
 
         // Create input for HSL
-        this.hslInput = document.createElement("input");
-        this.hslInput.type = "text";
-        this.hslInput.placeholder = "HSL (e.g., 0, 100%, 50%)";
-        this.hslInput.style.marginTop = "10px";
+        this.hslInput = this.createStyledInput("HSL (e.g., 0, 100%, 50%)", "");
+        this.inputContainer.appendChild(this.hslInput);
 
-        this.container.appendChild(this.hslInput);
+        this.container.appendChild(this.inputContainer);
 
         this.context = this.canvas.getContext("2d");
         this.drawColorSpectrum();
+    }
+
+    createStyledInput(placeholder, value) {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = placeholder;
+        input.value = value;
+        input.style.width = "100%";
+        input.style.padding = "10px";
+        input.style.border = "1px solid #ddd";
+        input.style.borderRadius = "4px";
+        input.style.fontSize = "14px";
+        input.style.boxSizing = "border-box";
+        input.style.outline = "none";
+        input.style.backgroundColor = "#fff";
+        input.style.transition = "border-color 0.3s";
+        input.style.fontFamily = "'Arial', sans-serif";
+
+        input.addEventListener("focus", () => {
+            input.style.borderColor = "#007BFF";
+        });
+
+        input.addEventListener("blur", () => {
+            input.style.borderColor = "#ddd";
+        });
+
+        return input;
     }
 
     drawColorSpectrum() {
