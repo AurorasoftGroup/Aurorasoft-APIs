@@ -24,6 +24,16 @@ class ColorPicker {
         
         this.container.appendChild(this.canvas);
 
+        // Create preview box to show selected color
+        this.previewBox = document.createElement("div");
+        this.previewBox.style.width = "50px";
+        this.previewBox.style.height = "50px";
+        this.previewBox.style.marginTop = "10px";
+        this.previewBox.style.border = "1px solid #000";
+        this.previewBox.style.backgroundColor = this.color;
+
+        this.container.appendChild(this.previewBox);
+
         // Create input to show selected color
         this.colorInput = document.createElement("input");
         this.colorInput.type = "text";
@@ -70,13 +80,19 @@ class ColorPicker {
         const imageData = this.context.getImageData(x, y, 1, 1).data;
         this.color = `rgb(${imageData[0]}, ${imageData[1]}, ${imageData[2]})`;
 
-        this.colorInput.value = this.color;
+        this.updateUI();
         this.container.dispatchEvent(new CustomEvent("colorChange", { detail: this.color }));
     }
 
     updateColor(event) {
         this.color = event.target.value;
+        this.updateUI();
         this.container.dispatchEvent(new CustomEvent("colorChange", { detail: this.color }));
+    }
+
+    updateUI() {
+        this.colorInput.value = this.color;
+        this.previewBox.style.backgroundColor = this.color;
     }
 }
 
